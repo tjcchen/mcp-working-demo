@@ -11,5 +11,6 @@ source .venv/bin/activate
 uv pip install -r pyproject.toml
 
 运行客户端，并连接server, 调用MCP工具
+以下命令会在一个进程中启动server.py和client.py
 uv run client.py server.py
 uv run client-deepseek.py server.py

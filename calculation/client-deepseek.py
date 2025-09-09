@@ -46,7 +46,7 @@ async def main():
             break
         # 构造对话
         messages = [
-            {"role": "system", "content": "你是一个加法助手，遇到加法问题请调用工具add，最后用自然语言回答用户。"},
+            {"role": "system", "content": "你是一个加法助手，遇到加法问题请调用工具add，最后用自然语言回答用户；遇到减法问题请调用工具minus，最后用自然语言回答用户"},
             {"role": "user", "content": user_input}
         ]
         while True:
