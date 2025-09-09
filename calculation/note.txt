@@ -14,3 +14,11 @@ uv pip install -r pyproject.toml
 以下命令会在一个进程中启动server.py和client.py
 uv run client.py server.py
 uv run client-deepseek.py server.py
+
+
+调用 mcp 的主要步骤：
+1. 客户端/LLM通过调用 `session.list_tools()` 获取工具列表的 schema
+2. LLM 根据用户意图，选择合适的工具，并自动生成参数
+3. 客户端用 `session.call_tool()` 调用工具，拿到结果
+4. LLM 用结果生成自然语言回复
+
