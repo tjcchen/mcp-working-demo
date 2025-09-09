@@ -1,0 +1,15 @@
+安装uv
+pip3 install uv
+
+设置环境
+uv venv - 创建新的虚拟环境
+
+激活环境
+source .venv/bin/activate
+
+安装环境
+uv pip install -r pyproject.toml
+
+运行客户端，并连接server, 调用MCP工具
+uv run client.py server.py
+uv run client-deepseek.py server.py
