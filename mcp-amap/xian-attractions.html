@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>西安探险家指南 - 发现古都魅力</title>
+
+    <!-- 外部样式和字体 -->
+    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/tailwindcss/2.2.19/tailwind.min.css">
+    <link rel="stylesheet" href="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-100-M/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap">
+
+    <!-- Alpine.js -->
+    <script defer src="https://unpkg.com/alpinejs@3.10.5/dist/cdn.min.js"></script>
+
+    <style>
+        /* 复古背景纹理 */
+        body {
+            background-image:
+                radial-gradient(circle at 25% 25%, rgba(139, 69, 19, 0.1) 2px, transparent 2px),
+                radial-gradient(circle at 75% 75%, rgba(160, 82, 45, 0.1) 1px, transparent 1px),
+                linear-gradient(45deg, rgba(245, 245, 220, 0.9) 0%, rgba(255, 248, 220, 0.9) 100%);
+            background-size: 20px 20px, 30px 30px, 100% 100%;
+            background-attachment: fixed;
+        }
+
+        /* 自定义字体 */
+        .font-serif-zh { font-family: 'Noto Serif SC', serif; }
+        .font-sans-zh { font-family: 'Noto Sans SC', sans-serif; }
+
+        /* 复古边框效果 */
+        .vintage-border {
+            border: 2px solid #8B4513;
+            box-shadow:
+                inset 0 0 10px rgba(139, 69, 19, 0.3),
+                0 0 15px rgba(139, 69, 19, 0.2);
+        }
+
+        /* 墨迹效果 */
+        .ink-effect {
+            background: linear-gradient(45deg, #8B4513 25%, transparent 25%),
+                        linear-gradient(-45deg, #8B4513 25%, transparent 25%),
+                        linear-gradient(45deg, transparent 75%, #8B4513 75%),
+                        linear-gradient(-45deg, transparent 75%, #8B4513 75%);
+            background-size: 2px 2px;
+            background-position: 0 0, 0 1px, 1px -1px, -1px 0px;
+        }
+
+        /* 播放按钮样式 */
+        .play-button {
+            background: linear-gradient(145deg, #8B4513, #A0522D);
+            border: 2px solid #654321;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .play-button:hover {
+            background: linear-gradient(145deg, #A0522D, #8B4513);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+        }
+
+        /* 展开动画 */
+        .expand-transition {
+            transition: all 0.5s ease-in-out;
+        }
+
+        /* 音频播放器样式 */
+        .audio-player {
+            background: linear-gradient(145deg, #F5F5DC, #FFFACD);
+            border: 1px solid #DAA520;
+        }
+    </style>
+</head>
+<body class="font-sans-zh min-h-screen">
+    <!-- 页面头部 -->
+    <header class="bg-gradient-to-b from-amber-100 to-yellow-50 py-8 px-4 vintage-border">
+        <div class="max-w-4xl mx-auto text-center">
+            <h1 class="text-4xl md:text-5xl font-serif-zh font-bold text-amber-900 mb-4 ink-effect py-4">
+                🗺️ 西安探险家指南
+            </h1>
+            <p class="text-lg md:text-xl text-amber-800 font-medium">
+                穿越千年古都，发现隐藏的魅力宝藏
+            </p>
+            <div class="mt-6 text-sm text-amber-700 italic">
+                "踏着历史的足迹，聆听古都的低语"
+            </div>
+        </div>
+    </header>
+
+    <!-- 主要内容区域 -->
+    <main class="max-w-4xl mx-auto px-4 py-8" x-data="app()">
+        <!-- 景点列表 -->
+        <div class="space-y-6">
+            <!-- 西安博物院 -->
+            <div class="bg-white/80 backdrop-blur-sm rounded-lg shadow-lg vintage-border"
+                 x-data="{ expanded: false, playing: false }">
+                <div class="p-6">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-4">
+                            <h2 class="text-2xl font-serif-zh font-bold text-amber-900 cursor-pointer hover:text-amber-700 transition-colors"
+                                @click="expanded = !expanded">
+                                🏛️ 西安博物院
+                            </h2>
+                            <button class="play-button w-12 h-12 rounded-full flex items-center justify-center text-white"
+                                    @click="playing = !playing">
+                                <i :class="playing ? 'fas fa-pause' : 'fas fa-play'" class="text-lg"></i>
+                            </button>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <span class="text-yellow-500">⭐ 4.8</span>
+                            <span class="text-green-600 font-medium">免费</span>
+                        </div>
+                    </div>
+
+                    <!-- 音频播放器 -->
+                    <div class="mt-4" x-show="playing" x-transition>
+                        <audio controls class="w-full audio-player rounded-lg p-2">
+                            <source src="" type="audio/mpeg">
+                            您的浏览器不支持音频播放。
+                        </audio>
+                        <p class="text-sm text-amber-700 mt-2 italic">
+                            🎵 "穿越时空的长廊，听文物讲述千年故事..."
+                        </p>
+                    </div>
+
+                    <!-- 展开的详细信息 -->
+                    <div class="mt-4 expand-transition overflow-hidden"
+                         :class="{ 'max-h-96 opacity-100': expanded, 'max-h-0 opacity-0': !expanded }">
+                        <div class="border-t border-amber-200 pt-4">
+                            <div class="grid md:grid-cols-2 gap-4">
+                                <div>
+                                    <h3 class="font-semibold text-amber-900 mb-2">📍 基本信息</h3>
+                                    <p class="text-gray-700"><strong>地址：</strong>朱雀大街37号</p>
+                                    <p class="text-gray-700"><strong>类型：</strong>博物馆、旅游景点</p>
+                                    <p class="text-gray-700"><strong>等级：</strong>AAAA级景区</p>
+                                </div>
+                                <div>
+                                    <h3 class="font-semibold text-amber-900 mb-2">⏰ 开放时间</h3>
+                                    <p class="text-gray-700 text-sm">周一、周三-周日 08:30-18:00</p>
+                                    <p class="text-gray-700 text-sm">节假日：08:30-18:00</p>
+                                </div>
+                            </div>
+                            <div class="mt-4">
+                                <h3 class="font-semibold text-amber-900 mb-2">✨ 特色亮点</h3>
+                                <p class="text-gray-700 leading-relaxed">
+                                    中国西北地区最大的综合性博物馆，收藏有大量珍贵文物。
+                                    这里不仅是一座博物馆，更是一扇通往古代文明的窗口。
+                                    每一件文物都承载着厚重的历史记忆，每一个展厅都讲述着动人的故事。
+                                </p>
+                            </div>
+                            <div class="mt-4 italic text-amber-800 bg-amber-50 p-3 rounded">
+                                "在博物馆的静谧中，千年时光仿佛凝固，让我们在文物间追寻先人的智慧与艺术。" 📚
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 大明宫国家遗址公园 -->
+            <div class="bg-white/80 backdrop-blur-sm rounded-lg shadow-lg vintage-border"
+                 x-data="{ expanded: false, playing: false }">
+                <div class="p-6">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-4">
+                            <h2 class="text-2xl font-serif-zh font-bold text-amber-900 cursor-pointer hover:text-amber-700 transition-colors"
+                                @click="expanded = !expanded">
+                                🏰 大明宫国家遗址公园
+                            </h2>
+                            <button class="play-button w-12 h-12 rounded-full flex items-center justify-center text-white"
+                                    @click="playing = !playing">
+                                <i :class="playing ? 'fas fa-pause' : 'fas fa-play'" class="text-lg"></i>
+                            </button>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <span class="text-yellow-500">⭐ 4.6</span>
+                            <span class="text-green-600 font-medium">60元</span>
+                        </div>
+                    </div>
+
+                    <!-- 音频播放器 -->
+                    <div class="mt-4" x-show="playing" x-transition>
+                        <audio controls class="w-full audio-player rounded-lg p-2">
+                            <source src="" type="audio/mpeg">
+                            您的浏览器不支持音频播放。
+                        </audio>
+                        <p class="text-sm text-amber-700 mt-2 italic">
+                            🎵 "步入唐朝宫廷，感受盛世的辉煌与繁华..."
+                        </p>
+                    </div>
+
+                    <!-- 展开的详细信息 -->
+                    <div class="mt-4 expand-transition overflow-hidden"
+                         :class="{ 'max-h-96 opacity-100': expanded, 'max-h-0 opacity-0': !expanded }">
+                        <div class="border-t border-amber-200 pt-4">
+                            <div class="grid md:grid-cols-2 gap-4">
+                                <div>
+                                    <h3 class="font-semibold text-amber-900 mb-2">📍 基本信息</h3>
+                                    <p class="text-gray-700"><strong>地址：</strong>自强东路585号</p>
+                                    <p class="text-gray-700"><strong>类型：</strong>世界遗产、国家级景点</p>
+                                    <p class="text-gray-700"><strong>等级：</strong>AAAAA级景区</p>
+                                </div>
+                                <div>
+                                    <h3 class="font-semibold text-amber-900 mb-2">⏰ 开放时间</h3>
+                                    <p class="text-gray-700 text-sm">周一至周日 08:30-19:00</p>
+                                </div>
+                            </div>
+                            <div class="mt-4">
+                                <h3 class="font-semibold text-amber-900 mb-2">✨ 特色亮点</h3>
+                                <p class="text-gray-700 leading-relaxed">
+                                    唐朝大明宫遗址公园，西安城市中央公园，展示唐朝宫廷文化。
+                                    这里曾是唐朝最宏伟的宫殿建筑群，见证了大唐盛世的繁荣景象。
+                                    如今的遗址公园融合了历史遗迹与现代景观，成为市民休闲的好去处。
+                                </p>
+                            </div>
+                            <div class="mt-4 italic text-amber-800 bg-amber-50 p-3 rounded">
+                                "在宫廷遗址的见证下，唐朝的辉煌仿佛昨日重现，让我们一同穿越时空的长河。" 👑
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 西安城墙 -->
+            <div class="bg-white/80 backdrop-blur-sm rounded-lg shadow-lg vintage-border"
+                 x-data="{ expanded: false, playing: false }">
+                <div class="p-6">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-4">
+                            <h2 class="text-2xl font-serif-zh font-bold text-amber-900 cursor-pointer hover:text-amber-700 transition-colors"
+                                @click="expanded = !expanded">
+                                🏯 西安城墙
+                            </h2>
+                            <button class="play-button w-12 h-12 rounded-full flex items-center justify-center text-white"
+                                    @click="playing = !playing">
+                                <i :class="playing ? 'fas fa-pause' : 'fas fa-play'" class="text-lg"></i>
+                            </button>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <span class="text-yellow-500">⭐ 4.8</span>
+                            <span class="text-green-600 font-medium">54元</span>
+                        </div>
+                    </div>
+
+                    <!-- 音频播放器 -->
+                    <div class="mt-4" x-show="playing" x-transition>
+                        <audio controls class="w-full audio-player rounded-lg p-2">
+                            <source src="" type="audio/mpeg">
+                            您的浏览器不支持音频播放。
+                        </audio>
+                        <p class="text-sm text-amber-700 mt-2 italic">
+                            🎵 "骑着单车围着古城墙，感受西安的厚重与活力..."
+                        </p>
+                    </div>
+
+                    <!-- 展开的详细信息 -->
+                    <div class="mt-4 expand-transition overflow-hidden"
+                         :class="{ 'max-h-96 opacity-100': expanded, 'max-h-0 opacity-0': !expanded }">
+                        <div class="border-t border-amber-200 pt-4">
+                            <div class="grid md:grid-cols-2 gap-4">
+                                <div>
+                                    <h3 class="font-semibold text-amber-900 mb-2">📍 基本信息</h3>
+                                    <p class="text-gray-700"><strong>地址：</strong>南大街2号</p>
+                                    <p class="text-gray-700"><strong>类型：</strong>国家级景点</p>
+                                    <p class="text-gray-700"><strong>等级：</strong>AAAAA级景区</p>
+                                </div>
+                                <div>
+                                    <h3 class="font-semibold text-amber-900 mb-2">⏰ 开放时间</h3>
+                                    <p class="text-gray-700 text-sm">周一至周日 08:00-22:00</p>
+                                </div>
+                            </div>
+                            <div class="mt-4">
+                                <h3 class="font-semibold text-amber-900 mb-2">✨ 特色亮点</h3>
+                                <p class="text-gray-700 leading-relaxed">
+                                    明朝古城墙，西安标志性建筑，全长13.7公里，可骑行游览。
+                                    这是中国现存最完整的古代城垣建筑体系，承载着西安1300多年的建城史。
+                                    无论是骑行还是步行，都能感受到这座古城的磅礴气势。
+                                </p>
+                            </div>
+                            <div class="mt-4 italic text-amber-800 bg-amber-50 p-3 rounded">
+                                "古城墙见证了西安的变迁，每一块砖石都诉说着岁月的故事。" 🧱
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 西安钟楼 -->
+            <div class="bg-white/80 backdrop-blur-sm rounded-lg shadow-lg vintage-border"
+                 x-data="{ expanded: false, playing: false }">
+                <div class="p-6">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-4">
+                            <h2 class="text-2xl font-serif-zh font-bold text-amber-900 cursor-pointer hover:text-amber-700 transition-colors"
+                                @click="expanded = !expanded">
+                                🔔 西安钟楼
+                            </h2>
+                            <button class="play-button w-12 h-12 rounded-full flex items-center justify-center text-white"
+                                    @click="playing = !playing">
+                                <i :class="playing ? 'fas fa-pause' : 'fas fa-play'" class="text-lg"></i>
+                            </button>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <span class="text-yellow-500">⭐ 4.9</span>
+                            <span class="text-green-600 font-medium">30元</span>
+                        </div>
+                    </div>
+
+                    <!-- 音频播放器 -->
+                    <div class="mt-4" x-show="playing" x-transition>
+                        <audio controls class="w-full audio-player rounded-lg p-2">
+                            <source src="" type="audio/mpeg">
+                            您的浏览器不支持音频播放。
+                        </audio>
+                        <p class="text-sm text-amber-700 mt-2 italic">
+                            🎵 "钟楼的钟声，回荡在古都的上空，唤醒沉睡的历史..."
+                        </p>
+                    </div>
+
+                    <!-- 展开的详细信息 -->
+                    <div class="mt-4 expand-transition overflow-hidden"
+                         :class="{ 'max-h-96 opacity-100': expanded, 'max-h-0 opacity-0': !expanded }">
+                        <div class="border-t border-amber-200 pt-4">
+                            <div class="grid md:grid-cols-2 gap-4">
+                                <div>
+                                    <h3 class="font-semibold text-amber-900 mb-2">📍 基本信息</h3>
+                                    <p class="text-gray-700"><strong>地址：</strong>西安地铁2号线钟楼站C出口正对面</p>
+                                    <p class="text-gray-700"><strong>类型：</strong>风景名胜</p>
+                                </div>
+                                <div>
+                                    <h3 class="font-semibold text-amber-900 mb-2">⏰ 开放时间</h3>
+                                    <p class="text-gray-700 text-sm">08:30-22:30（旺季）</p>
+                                </div>
+                            </div>
+                            <div class="mt-4">
+                                <h3 class="font-semibold text-amber-900 mb-2">✨ 特色亮点</h3>
+                                <p class="text-gray-700 leading-relaxed">
+                                    明朝建筑，西安的象征，每天定时鸣钟，周围商业繁华。
+                                    钟楼是西安的标志性建筑，代表着古都的中心位置。
+                                    登上钟楼可以俯瞰西安的繁华街景，感受古今交融的城市魅力。
+                                </p>
+                            </div>
+                            <div class="mt-4 italic text-amber-800 bg-amber-50 p-3 rounded">
+                                "当钟声响起，西安的脉搏仿佛也随之跳动，诉说着这座城市的古老传说。" 🕰️
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 大雁塔 -->
+            <div class="bg-white/80 backdrop-blur-sm rounded-lg shadow-lg vintage-border"
+                 x-data="{ expanded: false, playing: false }">
+                <div class="p-6">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-4">
+                            <h2 class="text-2xl font-serif-zh font-bold text-amber-900 cursor-pointer hover:text-amber-700 transition-colors"
+                                @click="expanded = !expanded">
+                                🗼 大雁塔
+                            </h2>
+                            <button class="play-button w-12 h-12 rounded-full flex items-center justify-center text-white"
+                                    @click="playing = !playing">
+                                <i :class="playing ? 'fas fa-pause' : 'fas fa-play'" class="text-lg"></i>
+                            </button>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <span class="text-yellow-500">⭐ 4.8</span>
+                            <span class="text-green-600 font-medium">30元</span>
+                        </div>
+                    </div>
+
+                    <!-- 音频播放器 -->
+                    <div class="mt-4" x-show="playing" x-transition>
+                        <audio controls class="w-full audio-player rounded-lg p-2">
+                            <source src="" type="audio/mpeg">
+                            您的浏览器不支持音频播放。
+                        </audio>
+                        <p class="text-sm text-amber-700 mt-2 italic">
+                            🎵 "雁塔晨钟，唤醒古都的记忆，唐僧取经的见证者..."
+                        </p>
+                    </div>
+
+                    <!-- 展开的详细信息 -->
+                    <div class="mt-4 expand-transition overflow-hidden"
+                         :class="{ 'max-h-96 opacity-100': expanded, 'max-h-0 opacity-0': !expanded }">
+                        <div class="border-t border-amber-200 pt-4">
+                            <div class="grid md:grid-cols-2 gap-4">
+                                <div>
+                                    <h3 class="font-semibold text-amber-900 mb-2">📍 基本信息</h3>
+                                    <p class="text-gray-700"><strong>地址：</strong>慈恩路1号大慈恩寺内</p>
+                                    <p class="text-gray-700"><strong>等级：</strong>AAAAA级景区</p>
+                                </div>
+                                <div>
+                                    <h3 class="font-semibold text-amber-900 mb-2">⏰ 开放时间</h3>
+                                    <p class="text-gray-700 text-sm">08:00-18:30（旺季）</p>
+                                </div>
+                            </div>
+                            <div class="mt-4">
+                                <h3 class="font-semibold text-amber-900 mb-2">✨ 特色亮点</h3>
+                                <p class="text-gray-700 leading-relaxed">
+                                    唐朝建筑，唐玄奘取经归来存放经卷的宝塔，可登塔远眺。
+                                    大雁塔是唐朝著名建筑，见证了玄奘法师取经归来的历史时刻。
+                                    登上塔顶可以俯瞰西安的壮丽景色，感受古都的博大与深厚。
+                                </p>
+                            </div>
+                            <div class="mt-4 italic text-amber-800 bg-amber-50 p-3 rounded">
+                                "雁塔巍峨，承载着取经路上的智慧与坚持，见证了中外文化交流的伟大篇章。" 📜
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 大慈恩寺 -->
+            <div class="bg-white/80 backdrop-blur-sm rounded-lg shadow-lg vintage-border"
+                 x-data="{ expanded: false, playing: false }">
+                <div class="p-6">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-4">
+                            <h2 class="text-2xl font-serif-zh font-bold text-amber-900 cursor-pointer hover:text-amber-700 transition-colors"
+                                @click="expanded = !expanded">
+                                🏮 大慈恩寺
+                            </h2>
+                            <button class="play-button w-12 h-12 rounded-full flex items-center justify-center text-white"
+                                    @click="playing = !playing">
+                                <i :class="playing ? 'fas fa-pause' : 'fas fa-play'" class="text-lg"></i>
+                            </button>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <span class="text-yellow-500">⭐ 4.3</span>
+                            <span class="text-green-600 font-medium">40元</span>
+                        </div>
+                    </div>
+
+                    <!-- 音频播放器 -->
+                    <div class="mt-4" x-show="playing" x-transition>
+                        <audio controls class="w-full audio-player rounded-lg p-2">
+                            <source src="" type="audio/mpeg">
+                            您的浏览器不支持音频播放。
+                        </audio>
+                        <p class="text-sm text-amber-700 mt-2 italic">
+                            🎵 "寺院梵音袅袅，诉说着禅意的宁静与智慧..."
+                        </p>
+                    </div>
+
+                    <!-- 展开的详细信息 -->
+                    <div class="mt-4 expand-transition overflow-hidden"
+                         :class="{ 'max-h-96 opacity-100': expanded, 'max-h-0 opacity-0': !expanded }">
+                        <div class="border-t border-amber-200 pt-4">
+                            <div class="grid md:grid-cols-2 gap-4">
+                                <div>
+                                    <h3 class="font-semibold text-amber-900 mb-2">📍 基本信息</h3>
+                                    <p class="text-gray-700"><strong>地址：</strong>慈恩路1号</p>
+                                    <p class="text-gray-700"><strong>等级：</strong>AAAAA级景区</p>
+                                </div>
+                                <div>
+                                    <h3 class="font-semibold text-amber-900 mb-2">⏰ 开放时间</h3>
+                                    <p class="text-gray-700 text-sm">08:30-18:00（旺季）</p>
+                                </div>
+                            </div>
+                            <div class="mt-4">
+                                <h3 class="font-semibold text-amber-900 mb-2">✨ 特色亮点</h3>
+                                <p class="text-gray-700 leading-relaxed">
+                                    唐朝皇家寺庙，与大雁塔相邻，佛教圣地。
+                                    大慈恩寺是唐朝著名的皇家寺庙，与大雁塔共同见证了玄奘取经的历史。
+                                    寺内古树参天，梵音袅袅，是修行和参拜的理想场所。
+                                </p>
+                            </div>
+                            <div class="mt-4 italic text-amber-800 bg-amber-50 p-3 rounded">
+                                "在寺院的宁静中，千年梵音依旧回荡，诉说着佛教智慧的永恒魅力。" 🧘
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 回民街 -->
+            <div class="bg-white/80 backdrop-blur-sm rounded-lg shadow-lg vintage-border"
+                 x-data="{ expanded: false, playing: false }">
+                <div class="p-6">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-4">
+                            <h2 class="text-2xl font-serif-zh font-bold text-amber-900 cursor-pointer hover:text-amber-700 transition-colors"
+                                @click="expanded = !expanded">
+                                🛍️ 回民街
+                            </h2>
+                            <button class="play-button w-12 h-12 rounded-full flex items-center justify-center text-white"
+                                    @click="playing = !playing">
+                                <i :class="playing ? 'fas fa-pause' : 'fas fa-play'" class="text-lg"></i>
+                            </button>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <span class="text-yellow-500">⭐ 4.6</span>
+                            <span class="text-green-600 font-medium">15元</span>
+                        </div>
+                    </div>
+
+                    <!-- 音频播放器 -->
+                    <div class="mt-4" x-show="playing" x-transition>
+                        <audio controls class="w-full audio-player rounded-lg p-2">
+                            <source src="" type="audio/mpeg">
+                            您的浏览器不支持音频播放。
+                        </audio>
+                        <p class="text-sm text-amber-700 mt-2 italic">
+                            🎵 "街头巷尾的叫卖声，混合着各种美食的香气，诉说着西安的烟火气息..."
+                        </p>
+                    </div>
+
+                    <!-- 展开的详细信息 -->
+                    <div class="mt-4 expand-transition overflow-hidden"
+                         :class="{ 'max-h-96 opacity-100': expanded, 'max-h-0 opacity-0': !expanded }">
+                        <div class="border-t border-amber-200 pt-4">
+                            <div class="grid md:grid-cols-2 gap-4">
+                                <div>
+                                    <h3 class="font-semibold text-amber-900 mb-2">📍 基本信息</h3>
+                                    <p class="text-gray-700"><strong>地址：</strong>北院门125号1-51</p>
+                                    <p class="text-gray-700"><strong>类型：</strong>特色商业街、步行街</p>
+                                </div>
+                                <div>
+                                    <h3 class="font-semibold text-amber-900 mb-2">⏰ 开放时间</h3>
+                                    <p class="text-gray-700 text-sm">全天开放</p>
+                                </div>
+                            </div>
+                            <div class="mt-4">
+                                <h3 class="font-semibold text-amber-900 mb-2">✨ 特色亮点</h3>
+                                <p class="text-gray-700 leading-relaxed">
+                                    西安回族聚居区，以美食闻名，拥有众多清真餐厅和特色小吃。
+                                    回民街是西安最有名的美食街区，汇聚了各种陕西特色小吃。
+                                    这里不仅是美食的天堂，更是了解西安回族文化的窗口。
+                                </p>
+                            </div>
+                            <div class="mt-4 italic text-amber-800 bg-amber-50 p-3 rounded">
+                                "在回民街的喧嚣中，品尝着西安的味道，感受着这座城市的包容与活力。" 🍲
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 页脚 -->
+        <footer class="mt-12 text-center py-8 border-t border-amber-300">
+            <div class="max-w-2xl mx-auto">
+                <p class="text-amber-800 font-medium mb-4">
+                    "愿每一个探险家都能在西安这座千年古都中，发现属于自己的宝藏故事"
+                </p>
+                <div class="flex justify-center space-x-6 text-amber-700">
+                    <span>📅 更新时间：2025年9月10日</span>
+                    <span>🎯 共收录：7大景点</span>
+                    <span>⭐ 平均评分：4.7</span>
+                </div>
+                <div class="mt-6 text-sm text-amber-600">
+                    <p>💡 游览建议：春秋季节气候宜人，地铁交通便利，预算约250-300元</p>
+                    <p class="mt-2 italic">"古都西安，探险永无止境"</p>
+                </div>
+            </div>
+        </footer>
+    </main>
+
+    <script>
+        // 全局应用状态管理
+        function app() {
+            return {
+                // 可以在这里添加全局状态和方法
+            }
+        }
+
+        // 添加一些交互效果
+        document.addEventListener('DOMContentLoaded', function() {
+            // 为所有景点卡片添加悬停效果
+            const cards = document.querySelectorAll('.vintage-border');
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-5px)';
+                    this.style.boxShadow = '0 10px 20px rgba(139, 69, 19, 0.3)';
+                });
+
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                    this.style.boxShadow = '0 4px 8px rgba(139, 69, 19, 0.2)';
+                });
+            });
+
+            // 页面滚动效果
+            let lastScrollTop = 0;
+            window.addEventListener('scroll', function() {
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                const header = document.querySelector('header');
+
+                if (scrollTop > lastScrollTop && scrollTop > 100) {
+                    // 向下滚动时稍微缩小头部
+                    header.style.transform = 'scale(0.98)';
+                } else {
+                    // 向上滚动时恢复
+                    header.style.transform = 'scale(1)';
+                }
+                lastScrollTop = scrollTop;
+            });
+        });
+    </script>
+</body>
+</html>
