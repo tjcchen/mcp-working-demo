@@ -1,6 +1,6 @@
 ## MCP-WORKING-DEMO
 
-The `Model Context Protocol (MCP)` is an open standard designed to enable AI models, particularly Large Language Models (LLMs), to interact with the real world. Its purpose is to allow AI to access external data and perform real-world actions, moving them beyond just generating text.
+The `Model Context Protocol (MCP)` is an open standard, proposed by Anthropic, designed to enable AI models, particularly Large Language Models (LLMs), to interact with the real world. Its purpose is to allow AI to access external data and perform real-world actions, moving them beyond just generating text.
 
 
 ## How It Works
@@ -19,3 +19,10 @@ This standardizes how an AI connects to various tools, eliminating the need for 
 ![MCP Diagram](./resources/mcp.png)
 
 (MCP handshake diagram)
+
+
+## MCP Links
+
+- [MCP GitHub](https://github.com/modelcontextprotocol)
+- [MCP Documentation](https://modelcontextprotocol.io/docs/getting-started/intro)
+- [MCP Specification](https://modelcontextprotocol.io/specification/2025-06-18)
